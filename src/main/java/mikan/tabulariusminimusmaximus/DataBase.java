@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.io.File;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -254,5 +255,24 @@ public class DataBase {
         }
     }
     
-    
+    /**
+     * Gets the last id from document table (tosite).
+     * @return int last id from document table. -1 if nothing returned.
+     */
+    public int getLastDocumentID () {
+        int id = -1;
+        Statement statement = this.getStatement();
+        String sql = "SELECT tositeID FROM tosite ORDER BY tositeID DESC LIMIT 1";
+        
+        try {
+            ResultSet result = statement.executeQuery(sql);
+            while (result.next()){
+                id = result.getInt("tositeID");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        this.closeStatement(statement);
+        return id;
+    }
 }

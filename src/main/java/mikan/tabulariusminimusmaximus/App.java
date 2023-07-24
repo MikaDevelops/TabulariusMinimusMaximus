@@ -31,8 +31,9 @@ public class App extends Application {
         db.checkDB();
         
         Label leibeli = new Label("tekstiä testauksen tähren");
-        MenuBar menu = MenuBarElement.getMenuBar();
         
+        // static menus
+        MenuBar menu = MenuBarElement.getMenuBar();
         VBox sideMenu = SidePanel.getSidePanel();
                 
         BorderPane pane = new BorderPane();
