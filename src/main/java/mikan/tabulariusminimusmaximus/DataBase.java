@@ -248,6 +248,10 @@ public class DataBase {
         return statement;
     }
     
+    /**
+     * Checks if SQLite file can be found. If not found, runs createDB -method
+     * that creates default database.
+     */
     public void checkDB(){
         File file = new File(pathToDB);
         if (!file.exists()){
