@@ -10,6 +10,7 @@ public class JournalRow {
     public int debet;
     public int kredit;
     public int tilinumero;
+    public String tilinimi;
     public String tarkiste;
     
 }

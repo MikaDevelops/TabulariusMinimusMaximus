@@ -282,6 +282,10 @@ public class DataBase {
         return id;
     }
     
+    /**
+     * Selects journal markings from database.
+     * @return ArrayList of Journal-objects
+     */
     public ArrayList<Journal> getJournalEntries(){
         
         // First get journal documents and journal markings
@@ -317,6 +321,13 @@ public class DataBase {
                     journalRowObject.debet = innerResult.getInt("debet");
                     journalRowObject.kredit = innerResult.getInt("kredit");
                     journalRowObject.tarkiste = innerResult.getString("tarkiste");
+                    
+                    // get a human readable name for the account
+                    sql = "SELECT nimi FROM tilikartta WHERE tilinumero="
+                            +journalRowObject.tilinumero;
+                    ResultSet accountName = statement.executeQuery(sql);
+                    if (accountName.next())journalRowObject.tilinimi = accountName.getString("nimi");
+                    
                     journalRows.add(journalRowObject);
                 }
                 journal.tapahtumarivi = journalRows;

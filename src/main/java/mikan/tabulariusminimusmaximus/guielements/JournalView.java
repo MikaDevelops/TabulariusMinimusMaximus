@@ -43,22 +43,24 @@ public class JournalView {
             taulu.add(new Text(journalEntries.get(i).tosite.kuvalinkki), 1, 3);
             
             GridPane rivit = new GridPane();
-            rivit.setHgap(15);
+            rivit.setHgap(20);
 
             rivit.add(new Text("tili"),0,0);
-            rivit.add(new Text("debet"),1,0);
-            rivit.add(new Text("kredit"),2,0);
+            rivit.add(new Text("tilinimi"),1,0);
+            rivit.add(new Text("debet"),2,0);
+            rivit.add(new Text("kredit"),3,0);
             
             for (int j = 0; j < journalEntries.get(i).tapahtumarivi.size(); j++){
                 int row = j+1;
                 rivit.add(new Text(Integer.toString(journalEntries.get(i).tapahtumarivi.get(j).tilinumero)),0,row);
-                rivit.add(new Text(Integer.toString(journalEntries.get(i).tapahtumarivi.get(j).debet)),1,row);
-                rivit.add(new Text(Integer.toString(journalEntries.get(i).tapahtumarivi.get(j).kredit)),2,row);
+                rivit.add(new Text(journalEntries.get(i).tapahtumarivi.get(i).tilinimi),1,row);
+                rivit.add(new Text(Integer.toString(journalEntries.get(i).tapahtumarivi.get(j).debet)),2,row);
+                rivit.add(new Text(Integer.toString(journalEntries.get(i).tapahtumarivi.get(j).kredit)),3,row);
             }
             
             journalView.getChildren().addAll(taulu, rivit);
             
-            if(i < journalEntries.size()){
+            if(i < journalEntries.size()-1){
                 Separator separator = new Separator(Orientation.HORIZONTAL);
        
                 journalView.getChildren().add(separator);
