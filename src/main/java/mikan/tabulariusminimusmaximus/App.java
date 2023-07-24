@@ -1,6 +1,7 @@
 package mikan.tabulariusminimusmaximus;
 
 import java.io.File;
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -54,6 +55,8 @@ public class App extends Application {
             int lastEntryID = db.getLastDocumentID();
             if(lastEntryID > -1) {
                 pane.setCenter(JournalAdd.getJournalAddView( lastEntryID ));
+                ArrayList journalEntries = db.getJournalEntries();
+                System.out.println("fddf");
             }else {pane.setCenter(new Label("Tietokanta viallinen"));}
         });
         

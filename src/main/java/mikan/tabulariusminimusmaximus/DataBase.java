@@ -11,9 +11,11 @@ import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import mikan.tabulariusminimusmaximus.datamodel.*;
 
 /**
  * Handles SQLite database actions.
@@ -278,5 +280,58 @@ public class DataBase {
         }
         this.closeStatement(statement);
         return id;
+    }
+    
+    public ArrayList<Journal> getJournalEntries(){
+        
+        // First get journal documents and journal markings
+        String sql = "SELECT tosite.tositeID, tosite.pvm, tosite.kuvalinkki, "
+                + "tosite.tarkiste AS tositetarkiste, paivakirja.selite, paivakirja.tapahtumaID, "
+                + "paivakirja.tarkiste AS paivakirjatarkiste FROM paivakirja "
+                + "INNER JOIN tosite ON paivakirja.tositeID = tosite.tositeID";
+        Statement statement = this.getStatement();
+        try {
+            ResultSet results = statement.executeQuery(sql);
+            ArrayList journalEntries = new ArrayList<Journal>();
+            while (results.next()){
+            
+                Journal journal = new Journal();
+                journal.selite      = results.getString("selite");
+                journal.tapahtumaID = results.getInt("tapahtumaID");
+                journal.tarkiste    = results.getString("paivakirjatarkiste");
+                journal.tosite      = new JournalDocument(
+                        results.getInt("tositeID"),
+                        results.getString("pvm"),
+                        results.getString("kuvalinkki"),
+                        results.getString("tositetarkiste")
+                );
+                
+                sql = "SELECT * FROM tapahtumarivi WHERE tapahtumaID="+journal.tapahtumaID;
+                ResultSet innerResult = statement.executeQuery(sql);
+                
+                ArrayList<JournalRow> journalRows = new ArrayList<JournalRow>();
+                while (innerResult.next()){
+                    JournalRow journalRowObject = new JournalRow();
+                    journalRowObject.riviID = innerResult.getInt("riviID");
+                    journalRowObject.tilinumero = innerResult.getInt("tilinumero");
+                    journalRowObject.debet = innerResult.getInt("debet");
+                    journalRowObject.kredit = innerResult.getInt("kredit");
+                    journalRowObject.tarkiste = innerResult.getString("tarkiste");
+                    journalRows.add(journalRowObject);
+                }
+                journal.tapahtumarivi = journalRows;
+                journalEntries.add(journal);
+            }
+            return journalEntries;
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        this.closeStatement(statement);
+        return null;
+    }
+    
+    public void saveJournalEntries(){
+        //TODO
     }
 }
