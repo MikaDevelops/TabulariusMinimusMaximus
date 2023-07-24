@@ -21,6 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import mikan.tabulariusminimusmaximus.guielements.JournalAdd;
+import mikan.tabulariusminimusmaximus.guielements.JournalView;
 import mikan.tabulariusminimusmaximus.guielements.MenuBarElement;
 
 
@@ -55,13 +56,12 @@ public class App extends Application {
             int lastEntryID = db.getLastDocumentID();
             if(lastEntryID > -1) {
                 pane.setCenter(JournalAdd.getJournalAddView( lastEntryID ));
-                ArrayList journalEntries = db.getJournalEntries();
-                System.out.println("fddf");
             }else {pane.setCenter(new Label("Tietokanta viallinen"));}
         });
         
         paivakirjaLue.setOnAction(e->{
-            pane.setCenter(leibeli);
+            ArrayList journalEntries = db.getJournalEntries();
+            pane.setCenter(JournalView.getJournalView(journalEntries));
         });
         
         VBox sideMenu = new VBox(4);
