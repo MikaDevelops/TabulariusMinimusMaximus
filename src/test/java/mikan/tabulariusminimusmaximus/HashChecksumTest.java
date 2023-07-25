@@ -46,7 +46,7 @@ public class HashChecksumTest {
         
         HashChecksum checksum = new HashChecksum(testJournal, testPreviousHash);
         String result = checksum.countHash();
-        String expectation = "jotain";
+        String expectation = "6B319A7502B19E0D484A0A8DB1989D24";
  
         assertTrue(expectation.equals(result));
     }

@@ -1,6 +1,9 @@
 package mikan.tabulariusminimusmaximus;
 
 import java.lang.reflect.Field;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import jakarta.xml.bind.DatatypeConverter;
 
 /**
  *
@@ -16,7 +19,7 @@ public class HashChecksum<T> {
         this.previousHash = previousHash;        
     }
     
-    public String countHash() throws IllegalArgumentException, IllegalAccessException{
+    public String countHash() throws IllegalArgumentException, IllegalAccessException, NoSuchAlgorithmException{
         
         String line = "";
         Field[] listOfFields = this.rowObject.getClass().getDeclaredFields();
@@ -33,7 +36,14 @@ public class HashChecksum<T> {
             } 
         }
         
-        return line;
+        line += this.previousHash;
+        
+        MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+        messageDigest.update(line.getBytes());
+        byte[] digest = messageDigest.digest();
+        String newHash = DatatypeConverter.printHexBinary(digest);
+        
+        return newHash;
     }
     
 }
