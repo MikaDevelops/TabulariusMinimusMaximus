@@ -13,4 +13,15 @@ public class JournalRow {
     public String tilinimi;
     public String tarkiste;
     
+    public JournalRow(){}
+
+    public JournalRow(int riviID, int debet, int kredit, int tilinumero, String tilinimi, String tarkiste) {
+        this.riviID = riviID;
+        this.debet = debet;
+        this.kredit = kredit;
+        this.tilinumero = tilinumero;
+        this.tilinimi = tilinimi;
+        this.tarkiste = tarkiste;
+    }
+    
 }

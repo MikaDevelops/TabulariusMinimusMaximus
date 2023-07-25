@@ -6,6 +6,13 @@ package mikan.tabulariusminimusmaximus.datamodel;
  */
 public class JournalDocument {
     
+    public int      tositeID;
+    public String   pvm;
+    public String   kuvalinkki;
+    public String   tarkiste;
+    
+    
+    public JournalDocument(){}
     /**
      * Constructor for JournalDocument object.
      * @param tositeID  int
@@ -19,10 +26,4 @@ public class JournalDocument {
         this.kuvalinkki = kuvalinkki;
         this.tarkiste = tarkiste;
     }
-    
-    public int      tositeID;
-    public String   pvm;
-    public String   kuvalinkki;
-    public String   tarkiste;
-    
 }
