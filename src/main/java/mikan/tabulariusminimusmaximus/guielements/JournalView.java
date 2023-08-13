@@ -41,7 +41,7 @@ public class JournalView {
             taulu.add(new Text(Integer.toString(journalEntries.get(i).tosite.tositeID)), 1, 1);
             taulu.add(new Text(journalEntries.get(i).selite), 1, 2);
             taulu.add(new Text(journalEntries.get(i).tosite.kuvalinkki), 1, 3);
-            
+
             GridPane rivit = new GridPane();
             rivit.setHgap(20);
 

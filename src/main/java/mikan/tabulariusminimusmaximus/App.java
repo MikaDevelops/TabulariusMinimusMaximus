@@ -52,12 +52,7 @@ public class App extends Application {
         Button paivakirja = new Button("Kirjaa tapahtuma päiväkirjaan");
         Button paivakirjaLue = new Button("Tarkastele päiväkirjamerkintöjä");
         
-        paivakirja.setOnAction(e->{
-            int lastEntryID = db.getLastDocumentID();
-            if(lastEntryID > -1) {
-                pane.setCenter(JournalAdd.getJournalAddView( lastEntryID ));
-            }else {pane.setCenter(new Label("Tietokanta viallinen"));}
-        });
+        
         
         paivakirjaLue.setOnAction(e->{
             ArrayList journalEntries = db.getJournalEntries();
@@ -73,10 +68,17 @@ public class App extends Application {
         pane.setCenter(leibeli);
         Scene scene = new Scene(pane);
         
+        paivakirja.setOnAction(e->{
+            int lastEntryID = db.getLastDocumentID();
+            if(lastEntryID > -1) {
+                pane.setCenter(JournalAdd.getJournalAddView( lastEntryID, stage, scene ));
+            }else {pane.setCenter(new Label("Tietokanta viallinen"));}
+        });
+        
         stage.setTitle("Tabularius Minimus Maximus");
         stage.getIcons().add(new Image(new File("./images/logo.png").toURI().toString()));
         stage.setMinHeight(400);
-        stage.setMinWidth(600);
+        stage.setMinWidth(700);
         stage.setScene(scene);
         stage.show();
     }

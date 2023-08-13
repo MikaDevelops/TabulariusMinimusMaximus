@@ -41,7 +41,7 @@ public class HashChecksum<T> {
         MessageDigest messageDigest = MessageDigest.getInstance("MD5");
         messageDigest.update(line.getBytes());
         byte[] digest = messageDigest.digest();
-        String newHash = DatatypeConverter.printHexBinary(digest);
+        String newHash = DatatypeConverter.printHexBinary(digest).toUpperCase();
         
         return newHash;
     }

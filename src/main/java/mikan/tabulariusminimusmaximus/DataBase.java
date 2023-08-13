@@ -342,6 +342,35 @@ public class DataBase {
         return null;
     }
     
+    /**
+     * 
+     * @return ArrayList of Accounts objects, containing all in account table
+     */
+    public ArrayList<Account> getAccountList(){
+    
+        ArrayList<Account> accounts = new ArrayList<>();
+        Statement statement = this.getStatement();
+        String sqlString = "SELECT * FROM tilikartta";
+        
+        try {
+            ResultSet result = statement.executeQuery(sqlString);
+            while (result.next()){
+               accounts.add( new Account (
+                       result.getInt("tilinumero"),
+                       result.getInt("kategoriaID"),
+                       result.getString("nimi"),
+                       result.getString("kuvaus"),
+                       result.getInt("alvkanta")   
+               ) );
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        this.closeStatement(statement);
+        return accounts;
+    }
+    
     public void saveJournalEntries(){
         //TODO
     }
