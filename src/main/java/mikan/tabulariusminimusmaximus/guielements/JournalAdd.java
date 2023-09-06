@@ -12,6 +12,7 @@ import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -57,8 +58,9 @@ public class JournalAdd {
         DatePicker datePicker = new DatePicker();
         TextField seliteTextField = new TextField();
         ComboBox tiliCmbBox = new ComboBox();
-        ComboBox perAnCmbBox = new ComboBox();
-        TextField eur = new TextField();
+
+        TextField debetTextField = new TextField();
+        TextField kreditTextField = new TextField();
         Button addRowBtn = new Button("lisää rivi");
         Button saveBtn = new Button("Tallenna\nmerkintä\npäiväkirjaan");
         
@@ -75,11 +77,6 @@ public class JournalAdd {
         }
         ObservableList<String> obsAccounts = FXCollections.observableArrayList(accountListing);
         tiliCmbBox.setItems(obsAccounts);
-        // perAn
-        ArrayList<String> perAnArray = new ArrayList<>();
-        perAnArray.addAll(Arrays.asList(new String[] {"debet","kredit"}));
-        ObservableList<String> obsPerAn = FXCollections.observableArrayList(perAnArray);
-        perAnCmbBox.setItems(obsPerAn);
         
         // event handlers
         chooseFilesBtn.setOnAction(e->{
@@ -90,30 +87,29 @@ public class JournalAdd {
         });
         addRowBtn.setOnAction(e->{
             
-            TextField seliteAddTxtField = new TextField();
+            TextField seliteAddTxtField = new TextField("jotai");
             TextField addEurTxtField = new TextField();
             ComboBox addPerAnCmb = new ComboBox();
             
-            ArrayList<String> perAnAdd = new ArrayList<>();
-            perAnAdd.addAll(Arrays.asList(new String[] {"debet","kredit"}));
-            ObservableList<String> obsAddPerAn = FXCollections.observableArrayList(perAnAdd);
-            addPerAnCmb.setItems(obsPerAn);
+
             
             // IDs for extra fields
-//            seliteAddTxtField.setId("seliteAdded"+Integer.toString(indexForField));
+            seliteAddTxtField.setId("seliteAdded");
 //            addEurTxtField.setId("eurAdded"+Integer.toString(indexForField));
 //            addPerAnCmb.setId("perAnAdded"+Integer.toString(indexForField));
 //            indexForField++;
             
-            
+            journalView.add(seliteAddTxtField,0,10);
             //journalView.getChildren().remove(addRowBtn);
-            TextField testii = (TextField)scene.lookup("#testid");
-            System.out.println(testii.getText());
+            
+            System.out.println(scene.lookup("#seliteAdded").getId());
         });
         saveBtn.setOnAction(e->{
             //TODO
             
         });
+        
+        
         
         journalView.add(tositeIDLabel, 0, 0);
         journalView.add(tositeTiedostoLabel, 0, 1);
@@ -121,17 +117,21 @@ public class JournalAdd {
         journalView.add(tositepvmLabel, 0, 3);
         journalView.add(seliteLabel, 0, 4);
         journalView.add(tiliLabel, 0, 5);
-        journalView.add(perAnCmbBox, 0, 6);
-        journalView.add(addRowBtn, 0, 7);
-        journalView.add(saveBtn, 0, 8);
+        journalView.add(new Label("debet"), 0, 6);
+        journalView.add(new Label("kredit"), 0, 7);
+        journalView.add(addRowBtn, 0, 8);
+        journalView.add(saveBtn, 0, 9);
         
         journalView.add(tositeIDText, 1, 0);
         journalView.add(chooseFilesBtn, 1, 1);
         journalView.add(valittuTiedostoLabel, 1, 2);
         journalView.add(datePicker, 1, 3);
-        journalView.add(seliteTextField, 1, 4);
-        journalView.add(tiliCmbBox, 1, 5);
-        journalView.add(eur, 1, 6);
+        journalView.add(seliteTextField, 1, 4, 2, 1);
+        journalView.add(tiliCmbBox, 1, 5, 2, 1);
+        journalView.add(debetTextField, 1, 6);
+        journalView.add(kreditTextField, 1, 7);
+        journalView.add(new Label("eur"), 2, 6);
+        journalView.add(new Label("eur"), 2, 7);
         
 
         
