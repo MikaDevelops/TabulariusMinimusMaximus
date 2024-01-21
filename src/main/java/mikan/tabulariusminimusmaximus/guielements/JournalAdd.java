@@ -107,13 +107,13 @@ public class JournalAdd {
             ComboBox addPerCmb = new ComboBox(obsAccounts);
             ComboBox addAnCmb = new ComboBox(obsAccounts);
             
-
-            
             // IDs for extra fields
-            seliteAddTxtField.setId("seliteAdded");
-//            addEurTxtField.setId("eurAdded"+Integer.toString(indexForField));
-//            addPerAnCmb.setId("perAnAdded"+Integer.toString(indexForField));
-//            indexForField++;
+            seliteAddTxtField.setId("seliteAdded"+indexCalculator.idIndex());
+            addPerEurTxtField.setId("perEurAdded"+indexCalculator.idIndex());
+            addAnEurTxtField.setId("anAdded"+indexCalculator.idIndex());
+            addPerCmb.setId("perCmbAdded"+indexCalculator.idIndex());
+            addAnCmb.setId("anCmbAdded"+indexCalculator.idIndex());
+            
             
             // Move add row button and save button
             journalView.add(new Label("Selite"), 0, indexCalculator.value());
@@ -139,7 +139,8 @@ public class JournalAdd {
             journalView.getChildren().remove(saveBtn);
             journalView.add(saveBtn, 0, indexCalculator.value()+6);
             
-            System.out.println(scene.lookup("#seliteAdded").getId());
+            TextField tx = (TextField)scene.lookup("#seliteAdded"+indexCalculator.idIndex());
+            System.out.println(scene.lookup("#seliteAdded"+indexCalculator.idIndex()).getId() + tx.getText());
             
             indexCalculator.increment();
         });
