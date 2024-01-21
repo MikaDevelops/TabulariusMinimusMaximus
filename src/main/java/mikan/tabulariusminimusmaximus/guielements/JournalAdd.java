@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -31,11 +33,8 @@ import mikan.tabulariusminimusmaximus.datamodel.*;
  */
 public class JournalAdd {
     
-    static IndexCalculator indexForAddedFields = new IndexCalculator();
-    
     public static GridPane getJournalAddView( int id, Stage stage, Scene scene ){
-        
-        
+        IndexCalculator indexCalculator = new IndexCalculator();
         int nextEntryID = id+1;
         
         HashMap<String, String> addedFields;
@@ -117,37 +116,36 @@ public class JournalAdd {
 //            indexForField++;
             
             // Move add row button and save button
-            journalView.add(new Label("Selite"), 0, indexForAddedFields.value());
-            journalView.add(seliteAddTxtField,   1, indexForAddedFields.value(), 2, 1);
+            journalView.add(new Label("Selite"), 0, indexCalculator.value());
+            journalView.add(seliteAddTxtField,   1, indexCalculator.value(), 2, 1);
             
-            journalView.add(new Label("Tili debet/per"),0, indexForAddedFields.value()+1);
-            journalView.add(addPerCmb,                  1, indexForAddedFields.value()+1);
+            journalView.add(new Label("Tili debet/per"),0, indexCalculator.value()+1);
+            journalView.add(addPerCmb,                  1, indexCalculator.value()+1);
             
-            journalView.add(new Label("debet/per"), 0, indexForAddedFields.value()+2);
-            journalView.add(addPerEurTxtField,      1, indexForAddedFields.value()+2);
+            journalView.add(new Label("debet/per"), 0, indexCalculator.value()+2);
+            journalView.add(addPerEurTxtField,      1, indexCalculator.value()+2);
             
-            journalView.add(new Label("Tili kredit/an"), 0, indexForAddedFields.value()+3);
-            journalView.add(addAnCmb,                    1, indexForAddedFields.value()+3);
+            journalView.add(new Label("Tili kredit/an"), 0, indexCalculator.value()+3);
+            journalView.add(addAnCmb,                    1, indexCalculator.value()+3);
             
-            journalView.add(new Label("kredit/an"), 0, indexForAddedFields.value()+4);
-            journalView.add(addAnEurTxtField,      1, indexForAddedFields.value()+4);
+            journalView.add(new Label("kredit/an"), 0, indexCalculator.value()+4);
+            journalView.add(addAnEurTxtField,      1, indexCalculator.value()+4);
             
             
             
             journalView.getChildren().remove(addRowBtn);
-            journalView.add(addRowBtn, 0, indexForAddedFields.value()+5);
+            journalView.add(addRowBtn, 0, indexCalculator.value()+5);
             
             journalView.getChildren().remove(saveBtn);
-            journalView.add(saveBtn, 0, indexForAddedFields.value()+6);
+            journalView.add(saveBtn, 0, indexCalculator.value()+6);
             
             System.out.println(scene.lookup("#seliteAdded").getId());
             
-            indexForAddedFields.increment();
+            indexCalculator.increment();
         });
         
         saveBtn.setOnAction(e->{
             //TODO
-            
         });
         
         
