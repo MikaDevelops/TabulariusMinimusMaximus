@@ -34,6 +34,9 @@ public class HashChecksum<T> {
             if(type.equalsIgnoreCase("int")){
                 line += Integer.toString((int) field.get(this.rowObject));
             } 
+            if(type.equalsIgnoreCase("long")){
+                line += Long.toString((long) field.get(this.rowObject));
+            }
         }
         
         line += this.previousHash;
