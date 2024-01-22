@@ -1,9 +1,6 @@
 package mikan.tabulariusminimusmaximus.guielements;
 
 import java.io.File;
-import java.time.LocalDate;
-import java.time.chrono.Chronology;
-import java.util.Locale;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -84,13 +81,6 @@ public class JournalAdd {
         perTiliCmbBox.setItems(obsAccounts);
         anTiliCmbBox.setItems(obsAccounts);
         
-
-
-//        ArrayList<String> perAnAdd = new ArrayList<>();
-//        perAnAdd.addAll(Arrays.asList(new String[] {"debet","kredit"}));
-//        ObservableList<String> obsAddPerAn = FXCollections.observableArrayList(perAnAdd);
-
-        
         // event handlers
         chooseFilesBtn.setOnAction(e->{
             File file = fileChooser.showOpenDialog(stage);
@@ -101,9 +91,9 @@ public class JournalAdd {
         
         addRowBtn.setOnAction(e->{
             
-            TextField seliteAddTxtField = new TextField("jotai");
-            TextField addPerEurTxtField = new TextField("jotai2");
-            TextField addAnEurTxtField  = new TextField("jotai3");
+            TextField seliteAddTxtField = new TextField();
+            TextField addPerEurTxtField = new TextField();
+            TextField addAnEurTxtField  = new TextField();
             ComboBox addPerCmb = new ComboBox(obsAccounts);
             ComboBox addAnCmb = new ComboBox(obsAccounts);
             
@@ -114,8 +104,6 @@ public class JournalAdd {
             addPerCmb.setId("perCmbAdded"+indexCalculator.idIndex());
             addAnCmb.setId("anCmbAdded"+indexCalculator.idIndex());
             
-            
-            // Move add row button and save button
             journalView.add(new Label("Selite"), 0, indexCalculator.value());
             journalView.add(seliteAddTxtField,   1, indexCalculator.value(), 2, 1);
             
@@ -131,8 +119,7 @@ public class JournalAdd {
             journalView.add(new Label("kredit/an"), 0, indexCalculator.value()+4);
             journalView.add(addAnEurTxtField,      1, indexCalculator.value()+4);
             
-            
-            
+            // Move add row button and save button
             journalView.getChildren().remove(addRowBtn);
             journalView.add(addRowBtn, 0, indexCalculator.value()+5);
             
@@ -146,10 +133,29 @@ public class JournalAdd {
         });
         
         saveBtn.setOnAction(e->{
-            //TODO
+            
+            // Journal document
+            JournalDocument journalDoc = new JournalDocument();
+            /*
+            nextEntryID,
+            datePicker.getValue(),
+            valittuTiedostoLabel.getText(),
+            */
+            
+            // ArrayList for row objects.
+            
+            // Get hash from previous journal document.
+            
+            // Create hash for new journal document.
+            
+            // Journal row elements
+            // Hash from new journal document
+            
+            // Add ArrayList to journal document.
+            
+            // Journal document to database.
+            
         });
-        
-        
         
         journalView.add(tositeIDLabel, 0, 0);
         journalView.add(tositeTiedostoLabel, 0, 1);
@@ -174,8 +180,6 @@ public class JournalAdd {
         journalView.add(kreditTextField, 1, 8);
         journalView.add(new Label("eur"), 2, 6);
         journalView.add(new Label("eur"), 2, 8);
-        
-
         
         return journalView;
     }
