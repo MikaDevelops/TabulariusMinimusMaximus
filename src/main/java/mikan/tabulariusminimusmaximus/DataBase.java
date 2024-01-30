@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package mikan.tabulariusminimusmaximus;
 
 import java.sql.Connection;
@@ -372,17 +368,17 @@ public class DataBase {
         return accounts;
     }
     
-    public String getSavedHash(String table, int id){
+    public String getSavedHash(HashedDataBaseTables table, int id){
         
         String idField = "";
         switch (table){
-            case "paivakirja":
+            case PAIVAKIRJA:
                 idField = "tapahtumaID";
                 break;
-            case "tosite":
+            case TOSITE:
                 idField = "tositeID";
                 break;
-            case "tapahtumarivi":
+            case TAPAHTUMARIVI:
                 idField = "riviID";
                 break;
         }
@@ -405,4 +401,5 @@ public class DataBase {
     public void saveJournalEntries(){
         //TODO
     }
+    
 }
