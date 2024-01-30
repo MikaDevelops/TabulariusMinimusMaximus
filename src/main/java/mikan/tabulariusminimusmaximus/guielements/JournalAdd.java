@@ -30,6 +30,14 @@ import mikan.tabulariusminimusmaximus.datamodel.*;
  */
 public class JournalAdd {
     
+    /**
+     * Returns view for journal entry adding.
+     * @param id Previous journal id.
+     * @param stage 
+     * @param scene 
+     * @param db DataBase instance.
+     * @return GridPane to be shown in main area.
+     */
     public static GridPane getJournalAddView( int id, Stage stage, Scene scene ){
         IndexCalculator indexCalculator = new IndexCalculator();
         int nextEntryID = id+1;
@@ -134,22 +142,21 @@ public class JournalAdd {
         
         saveBtn.setOnAction(e->{
             
-            // Journal document
-            JournalDocument journalDoc = new JournalDocument();
             /*
             nextEntryID,
             datePicker.getValue(),
             valittuTiedostoLabel.getText(),
             */
             
-            // ArrayList for row objects.
-            ArrayList<JournalRow> arrayForRow = new ArrayList<>();
-            
             // Get hash from previous journal document.
             
             
-            // Create hash for new journal document.
+            // ArrayList for row objects.
+            ArrayList<JournalRow> arrayForRow = new ArrayList<>();
             
+            
+            // Create hash for new journal document.
+            JournalDocument journalDoc = new JournalDocument();
             // Journal row elements
             // Hash from new journal document
             
