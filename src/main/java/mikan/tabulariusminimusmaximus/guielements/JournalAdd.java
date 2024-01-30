@@ -149,14 +149,15 @@ public class JournalAdd {
             */
             
             // Get hash from previous journal document.
+            String previousJournalHash = db.getSavedHash(HashedDataBaseTables.PAIVAKIRJA, id);
             
+  
             
             // ArrayList for row objects.
             ArrayList<JournalRow> arrayForRow = new ArrayList<>();
             
             
-            // Create hash for new journal document.
-            JournalDocument journalDoc = new JournalDocument();
+            
             // Journal row elements
             // Hash from new journal document
             

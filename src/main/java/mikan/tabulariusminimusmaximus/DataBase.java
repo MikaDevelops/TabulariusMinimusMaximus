@@ -62,19 +62,18 @@ public class DataBase {
         
         // Datamodel. Järjestyksellä on väliä. Taulut joihin viitataan ensin.
         String[] tables1 = {
-            "CREATE TABLE tosite (tositeID INT PRIMARY KEY NOT NULL, pvm TEXT NOT NULL, kuvalinkki TEXT NOT NULL, tarkiste TEXT NOT NULL)",
-            "CREATE TABLE alvkannat (prosentti INT PRIMARY KEY NOT NULL, selite TEXT NOT NULL)",
-            "CREATE TABLE ylakategoria (ylakategoriaID INT PRIMARY KEY NOT NULL, nimi TEXT NOT NULL, paattyy TEXT NOT NULL)",
-            "CREATE TABLE tilikategoria (kategoriaID INT PRIMARY KEY NOT NULL, ylakategoriaID INT NOT NULL, nimi TEXT NOT NULL, FOREIGN KEY(ylakategoriaID) REFERENCES ylakategoria(ylakategoriaID))"
+            "CREATE TABLE tosite (tositeID INTEGER PRIMARY KEY NOT NULL, pvm TEXT NOT NULL, kuvalinkki TEXT NOT NULL, tarkiste TEXT NOT NULL)",
+            "CREATE TABLE alvkannat (prosentti INTEGER PRIMARY KEY NOT NULL, selite TEXT NOT NULL)",
+            "CREATE TABLE ylakategoria (ylakategoriaID INTEGER PRIMARY KEY NOT NULL, nimi TEXT NOT NULL, paattyy TEXT NOT NULL)",
+            "CREATE TABLE tilikategoria (kategoriaID INTEGER PRIMARY KEY NOT NULL, ylakategoriaID INT NOT NULL, nimi TEXT NOT NULL, FOREIGN KEY(ylakategoriaID) REFERENCES ylakategoria(ylakategoriaID))"
 
         };
         String[] tables2 = {
-            "CREATE TABLE tilikartta (tilinumero INT PRIMARY KEY NOT NULL, kategoriaID INT NOT NULL, alvkanta INT, nimi TEXT NOT NULL, kuvaus TEXT, FOREIGN KEY(kategoriaID) REFERENCES tilikategoria(kategoriaID), FOREIGN KEY(alvkanta) REFERENCES alvkannat(prosentti))",
-            "CREATE TABLE paivakirja (tapahtumaID INT PRIMARY KEY NOT NULL, tositeID INT NOT NULL, selite TEXT NOT NULL, tarkiste TEXT NOT NULL, FOREIGN KEY(tositeID) REFERENCES tosite(tositeID))"
+            "CREATE TABLE tilikartta (tilinumero INTEGER PRIMARY KEY NOT NULL, kategoriaID INT NOT NULL, alvkanta INT, nimi TEXT NOT NULL, kuvaus TEXT, FOREIGN KEY(kategoriaID) REFERENCES tilikategoria(kategoriaID), FOREIGN KEY(alvkanta) REFERENCES alvkannat(prosentti))"
         };
         String[] tables3 = {
-            "CREATE TABLE paakirja (riviID INT PRIMARY KEY NOT NULL, tilinumero INT NOT NULL, vuosi INT NOT NULL, kuukausi INT NOT NULL, debet INT, kredit INT, tarkiste TEXT NOT NULL, FOREIGN KEY(tilinumero) REFERENCES tilikartta(tilinumero))",
-            "CREATE TABLE tapahtumarivi (riviID INT PRIMARY KEY NOT NULL, tapahtumaID INT NOT NULL, tilinumero INT NOT NULL, debet INT, kredit INT, tarkiste TEXT NOT NULL, FOREIGN KEY(tapahtumaID) REFERENCES paivakirja(tapahtumaID), FOREIGN KEY(tilinumero) REFERENCES tilikartta(tilinumero))"
+            "CREATE TABLE paakirja (riviID INTEGER PRIMARY KEY NOT NULL, tilinumero INT NOT NULL, vuosi INT NOT NULL, kuukausi INT NOT NULL, debet INT, kredit INT, tarkiste TEXT NOT NULL, FOREIGN KEY(tilinumero) REFERENCES tilikartta(tilinumero))",
+            "CREATE TABLE tapahtumarivi (riviID INTEGER PRIMARY KEY NOT NULL, tositeID INT NOT NULL, selite TEXT NOT NULL, tilinumero INT NOT NULL, debet INT, kredit INT, tarkiste TEXT NOT NULL, FOREIGN KEY(tositeID) REFERENCES tosite(tositeID), FOREIGN KEY(tilinumero) REFERENCES tilikartta(tilinumero))"
         };
         
         // Starting data.
@@ -87,9 +86,6 @@ public class DataBase {
             
                 "INSERT INTO tosite(tositeID, pvm, kuvalinkki, tarkiste) VALUES "
                 +"(0, '2023-07-23', 'tietokannanaloitus.jpg', '8368f5f06e1b362211890e7717c274ce')",
-                
-                "INSERT INTO paivakirja(tapahtumaID, tositeID, selite, tarkiste) VALUES "
-                +"(0, 0, 'tietokannan pystytys', 'd1feea7d7becb110087e1463868a3ac4')",
                 
                 "INSERT INTO ylakategoria(ylakategoriaID, nimi, paattyy) VALUES "
                 +"(1, 'Pysyvät vastaavat', 'tase'), "
@@ -169,8 +165,8 @@ public class DataBase {
                 +"(9460, 17, 'Korkomenot', 'lainojen korot, maksetut viivästyskorot', 0), "
                 +"(9690, 17, 'Muut rahoitusmenot', 'lainojen pankkitakausprovisiot, toimitusmaksut ym. menot', 0)",
                 
-                "INSERT INTO tapahtumarivi(riviID, tapahtumaID, debet, kredit, tilinumero, tarkiste) VALUES "
-                +"(0, 0, 0, 0, 2201, '1bb6d008b9600db6b4b1e76720210980')",
+                "INSERT INTO tapahtumarivi(riviID, selite, tositeID, debet, kredit, tilinumero, tarkiste) VALUES "
+                +"(0, 'tietokannan aloitus', 0, 0, 0, 2201, '1bb6d008b9600db6b4b1e76720210980')",
                 
                 "INSERT INTO paakirja(riviID, tilinumero, vuosi, kuukausi, debet, kredit, tarkiste) VALUES "
                 +"(0, 2201, 2023, 7, 0, 0, '674be30f03285cb40adb02b71f542148')"
@@ -214,8 +210,7 @@ public class DataBase {
             }
             catch (SQLException ex) { System.out.println(ex.getMessage()); }
         }
-        
-        
+          
         this.closeStatement(statement);
     }
     
@@ -282,51 +277,34 @@ public class DataBase {
      * Selects journal markings from database.
      * @return ArrayList of Journal-objects
      */
-    public ArrayList<Journal> getJournalEntries(){
+    public ArrayList<JournalRow> getJournalEntries(){
         
         // First get journal documents and journal markings
         String sql = "SELECT tosite.tositeID, tosite.pvm, tosite.kuvalinkki, "
-                + "tosite.tarkiste AS tositetarkiste, paivakirja.selite, paivakirja.tapahtumaID, "
-                + "paivakirja.tarkiste AS paivakirjatarkiste FROM paivakirja "
-                + "INNER JOIN tosite ON paivakirja.tositeID = tosite.tositeID";
+                + "tosite.tarkiste AS tositetarkiste, tapahtumarivi.riviID, "
+                + "tapahtumarivi.selite, tapahtumarivi.tositeID, tapahtumarivi.debet, "
+                + "tapahtumarivi.kredit, tapahtumarivi.tilinumero, "
+                + "tapahtumarivi.tarkiste AS tapahtumarivitarkiste,"
+                + "tilikartta.nimi "
+                + "FROM tapahtumarivi JOIN tosite "
+                + "ON tosite.tositeID=tapahtumarivi.tositeID "
+                + "JOIN tilikartta ON tilikartta.tilinumero=tapahtumarivi.tilinumero";
         Statement statement = this.getStatement();
         try {
             ResultSet results = statement.executeQuery(sql);
-            ArrayList journalEntries = new ArrayList<Journal>();
+            ArrayList journalEntries = new ArrayList<JournalRow>();
             while (results.next()){
             
-                Journal journal = new Journal();
+                JournalRow journal = new JournalRow();
+                journal.tositeID = results.getInt("tositeID");
+                journal.pvm = results.getString("pvm");
                 journal.selite      = results.getString("selite");
-                journal.tapahtumaID = results.getInt("tapahtumaID");
-                journal.tarkiste    = results.getString("paivakirjatarkiste");
-                journal.tosite      = new JournalDocument(
-                        results.getInt("tositeID"),
-                        results.getString("pvm"),
-                        results.getString("kuvalinkki"),
-                        results.getString("tositetarkiste")
-                );
-                
-                sql = "SELECT * FROM tapahtumarivi WHERE tapahtumaID="+journal.tapahtumaID;
-                ResultSet innerResult = statement.executeQuery(sql);
-                
-                ArrayList<JournalRow> journalRows = new ArrayList<JournalRow>();
-                while (innerResult.next()){
-                    JournalRow journalRowObject = new JournalRow();
-                    journalRowObject.riviID = innerResult.getInt("riviID");
-                    journalRowObject.tilinumero = innerResult.getInt("tilinumero");
-                    journalRowObject.debet = innerResult.getInt("debet");
-                    journalRowObject.kredit = innerResult.getInt("kredit");
-                    journalRowObject.tarkiste = innerResult.getString("tarkiste");
+                journal.tilinumero = results.getInt("tilinumero");
+                journal.tilinimi = results.getString("nimi");
+                journal.debet = results.getInt("debet");
+                journal.kredit = results.getInt("kredit");
+                journal.tarkiste = results.getString("tapahtumarivitarkiste");
                     
-                    // get a human readable name for the account
-                    sql = "SELECT nimi FROM tilikartta WHERE tilinumero="
-                            +journalRowObject.tilinumero;
-                    ResultSet accountName = statement.executeQuery(sql);
-                    if (accountName.next())journalRowObject.tilinimi = accountName.getString("nimi");
-                    
-                    journalRows.add(journalRowObject);
-                }
-                journal.tapahtumarivi = journalRows;
                 journalEntries.add(journal);
             }
             this.closeStatement(statement);

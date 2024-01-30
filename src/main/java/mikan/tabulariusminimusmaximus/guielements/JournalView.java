@@ -19,14 +19,11 @@ import mikan.tabulariusminimusmaximus.datamodel.*;
  * @author mika
  */
 public class JournalView {
-    public static ScrollPane getJournalView(ArrayList<Journal> journalEntries){
+    public static ScrollPane getJournalView(ArrayList<JournalRow> journalEntries){
 
         ScrollPane journalScrollView = new ScrollPane();
         VBox journalView = new VBox();
         journalView.setPadding(new Insets(10,10,10,20));
-        
-        Label test = new Label("koekenttä1");
-        TextField testField = new TextField();
 
         
         for (int i = 0; i < journalEntries.size(); i++){
@@ -37,10 +34,10 @@ public class JournalView {
             taulu.add(new Text("Selite:  "), 0, 2);
             taulu.add(new Text("Kuvalinkki:  "), 0, 3);
             
-            taulu.add(new Text(journalEntries.get(i).tosite.pvm), 1, 0);
-            taulu.add(new Text(Integer.toString(journalEntries.get(i).tosite.tositeID)), 1, 1);
+            taulu.add(new Text(journalEntries.get(i).pvm), 1, 0);
+            taulu.add(new Text(Integer.toString(journalEntries.get(i).tositeID)), 1, 1);
             taulu.add(new Text(journalEntries.get(i).selite), 1, 2);
-            taulu.add(new Text(journalEntries.get(i).tosite.kuvalinkki), 1, 3);
+
 
             GridPane rivit = new GridPane();
             rivit.setHgap(20);
@@ -49,14 +46,12 @@ public class JournalView {
             rivit.add(new Text("tilinimi"),1,0);
             rivit.add(new Text("debet"),2,0);
             rivit.add(new Text("kredit"),3,0);
-            
-            for (int j = 0; j < journalEntries.get(i).tapahtumarivi.size(); j++){
-                int row = j+1;
-                rivit.add(new Text(Integer.toString(journalEntries.get(i).tapahtumarivi.get(j).tilinumero)),0,row);
-                rivit.add(new Text(journalEntries.get(i).tapahtumarivi.get(i).tilinimi),1,row);
-                rivit.add(new Text(Integer.toString(journalEntries.get(i).tapahtumarivi.get(j).debet)),2,row);
-                rivit.add(new Text(Integer.toString(journalEntries.get(i).tapahtumarivi.get(j).kredit)),3,row);
-            }
+
+            rivit.add(new Text(Integer.toString(journalEntries.get(i).tilinumero)),0,1);
+            rivit.add(new Text(journalEntries.get(i).tilinimi),1,1);
+            rivit.add(new Text(Integer.toString(journalEntries.get(i).debet)),2,1);
+            rivit.add(new Text(Integer.toString(journalEntries.get(i).kredit)),3,1);
+
             
             journalView.getChildren().addAll(taulu, rivit);
             
