@@ -143,8 +143,10 @@ public class JournalAdd {
             */
             
             // ArrayList for row objects.
+            ArrayList<JournalRow> arrayForRow = new ArrayList<>();
             
             // Get hash from previous journal document.
+            
             
             // Create hash for new journal document.
             

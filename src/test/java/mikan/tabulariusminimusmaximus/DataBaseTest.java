@@ -45,4 +45,17 @@ public class DataBaseTest {
         assertTrue(last>-1);
     }
     
+    /**
+     * Test of getLastDocumentID method, of class DataBase.
+     */
+    @org.junit.jupiter.api.Test
+    public void testGetgetSavedHash() {
+        DataBase db = new DataBase();
+        int id = 0;
+        String table = "";
+        String expected = "D1FEEA7D7BECB110087E1463868A3AC4";
+        String hash = db.getSavedHash("paivakirja", 0);
+        assertEquals(expected, hash);
+    }
+    
 }

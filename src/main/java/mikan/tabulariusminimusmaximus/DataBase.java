@@ -333,6 +333,7 @@ public class DataBase {
                 journal.tapahtumarivi = journalRows;
                 journalEntries.add(journal);
             }
+            this.closeStatement(statement);
             return journalEntries;
             
         } catch (SQLException ex) {
@@ -369,6 +370,36 @@ public class DataBase {
         
         this.closeStatement(statement);
         return accounts;
+    }
+    
+    public String getSavedHash(String table, int id){
+        
+        String idField = "";
+        switch (table){
+            case "paivakirja":
+                idField = "tapahtumaID";
+                break;
+            case "tosite":
+                idField = "tositeID";
+                break;
+            case "tapahtumarivi":
+                idField = "riviID";
+                break;
+        }
+        
+        try{
+            String sqlString = "SELECT tarkiste FROM " + table
+                    +" WHERE " + idField + "=" + id;
+            Statement statement = this.getStatement();
+            ResultSet result = statement.executeQuery(sqlString);
+            String tarkiste = result.getString("tarkiste").toUpperCase();
+            this.closeStatement(statement);
+            return tarkiste;
+        }
+        catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        return null;
     }
     
     public void saveJournalEntries(){
