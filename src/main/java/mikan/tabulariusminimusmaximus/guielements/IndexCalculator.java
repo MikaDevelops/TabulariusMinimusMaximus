@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package mikan.tabulariusminimusmaximus.guielements;
 
 /**
@@ -11,13 +7,19 @@ package mikan.tabulariusminimusmaximus.guielements;
 class IndexCalculator {
     
     int index = 12;
+    int idIndex = 1;
     
     protected void increment(){
         this.index += 7;
+        this.idIndex += 1;
     }
     
     protected int value(){
         return this.index;
+    }
+    
+    protected int idIndex(){
+        return this.idIndex;
     }
     
     protected void reset() {

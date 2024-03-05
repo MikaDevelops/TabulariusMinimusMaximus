@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -24,11 +26,16 @@ import mikan.tabulariusminimusmaximus.datamodel.*;
  */
 public class JournalAdd {
     
-    static IndexCalculator indexForAddedFields = new IndexCalculator();
-    
+    /**
+     * Returns view for journal entry adding.
+     * @param id Previous journal id.
+     * @param stage 
+     * @param scene 
+     * @param db DataBase instance.
+     * @return GridPane to be shown in main area.
+     */
     public static GridPane getJournalAddView( int id, Stage stage, Scene scene ){
-        
-        
+        IndexCalculator indexCalculator = new IndexCalculator();
         int nextEntryID = id+1;
         
         HashMap<String, String> addedFields;
@@ -78,13 +85,6 @@ public class JournalAdd {
         perTiliCmbBox.setItems(obsAccounts);
         anTiliCmbBox.setItems(obsAccounts);
         
-
-
-//        ArrayList<String> perAnAdd = new ArrayList<>();
-//        perAnAdd.addAll(Arrays.asList(new String[] {"debet","kredit"}));
-//        ObservableList<String> obsAddPerAn = FXCollections.observableArrayList(perAnAdd);
-
-        
         // event handlers
         chooseFilesBtn.setOnAction(e->{
             File file = fileChooser.showOpenDialog(stage);
@@ -95,55 +95,73 @@ public class JournalAdd {
         
         addRowBtn.setOnAction(e->{
             
-            TextField seliteAddTxtField = new TextField("jotai");
-            TextField addPerEurTxtField = new TextField("jotai2");
-            TextField addAnEurTxtField  = new TextField("jotai3");
+            TextField seliteAddTxtField = new TextField();
+            TextField addPerEurTxtField = new TextField();
+            TextField addAnEurTxtField  = new TextField();
             ComboBox addPerCmb = new ComboBox(obsAccounts);
             ComboBox addAnCmb = new ComboBox(obsAccounts);
             
-
-            
             // IDs for extra fields
-            seliteAddTxtField.setId("seliteAdded");
-//            addEurTxtField.setId("eurAdded"+Integer.toString(indexForField));
-//            addPerAnCmb.setId("perAnAdded"+Integer.toString(indexForField));
-//            indexForField++;
+            seliteAddTxtField.setId("seliteAdded"+indexCalculator.idIndex());
+            addPerEurTxtField.setId("perEurAdded"+indexCalculator.idIndex());
+            addAnEurTxtField.setId("anAdded"+indexCalculator.idIndex());
+            addPerCmb.setId("perCmbAdded"+indexCalculator.idIndex());
+            addAnCmb.setId("anCmbAdded"+indexCalculator.idIndex());
+            
+            journalView.add(new Label("Selite"), 0, indexCalculator.value());
+            journalView.add(seliteAddTxtField,   1, indexCalculator.value(), 2, 1);
+            
+            journalView.add(new Label("Tili debet/per"),0, indexCalculator.value()+1);
+            journalView.add(addPerCmb,                  1, indexCalculator.value()+1);
+            
+            journalView.add(new Label("debet/per"), 0, indexCalculator.value()+2);
+            journalView.add(addPerEurTxtField,      1, indexCalculator.value()+2);
+            
+            journalView.add(new Label("Tili kredit/an"), 0, indexCalculator.value()+3);
+            journalView.add(addAnCmb,                    1, indexCalculator.value()+3);
+            
+            journalView.add(new Label("kredit/an"), 0, indexCalculator.value()+4);
+            journalView.add(addAnEurTxtField,      1, indexCalculator.value()+4);
             
             // Move add row button and save button
-            journalView.add(new Label("Selite"), 0, indexForAddedFields.value());
-            journalView.add(seliteAddTxtField,   1, indexForAddedFields.value(), 2, 1);
-            
-            journalView.add(new Label("Tili debet/per"),0, indexForAddedFields.value()+1);
-            journalView.add(addPerCmb,                  1, indexForAddedFields.value()+1);
-            
-            journalView.add(new Label("debet/per"), 0, indexForAddedFields.value()+2);
-            journalView.add(addPerEurTxtField,      1, indexForAddedFields.value()+2);
-            
-            journalView.add(new Label("Tili kredit/an"), 0, indexForAddedFields.value()+3);
-            journalView.add(addAnCmb,                    1, indexForAddedFields.value()+3);
-            
-            journalView.add(new Label("kredit/an"), 0, indexForAddedFields.value()+4);
-            journalView.add(addAnEurTxtField,      1, indexForAddedFields.value()+4);
-            
-            
-            
             journalView.getChildren().remove(addRowBtn);
-            journalView.add(addRowBtn, 0, indexForAddedFields.value()+5);
+            journalView.add(addRowBtn, 0, indexCalculator.value()+5);
             
             journalView.getChildren().remove(saveBtn);
-            journalView.add(saveBtn, 0, indexForAddedFields.value()+6);
+            journalView.add(saveBtn, 0, indexCalculator.value()+6);
             
-            System.out.println(scene.lookup("#seliteAdded").getId());
+            TextField tx = (TextField)scene.lookup("#seliteAdded"+indexCalculator.idIndex());
+            System.out.println(scene.lookup("#seliteAdded"+indexCalculator.idIndex()).getId() + tx.getText());
             
-            indexForAddedFields.increment();
+            indexCalculator.increment();
         });
         
         saveBtn.setOnAction(e->{
-            //TODO
+            
+            /*
+            nextEntryID,
+            datePicker.getValue(),
+            valittuTiedostoLabel.getText(),
+            */
+            
+            // Get hash from previous journal document.
+            String previousJournalHash = db.getSavedHash(HashedDataBaseTables.PAIVAKIRJA, id);
+            
+  
+            
+            // ArrayList for row objects.
+            ArrayList<JournalRow> arrayForRow = new ArrayList<>();
+            
+            
+            
+            // Journal row elements
+            // Hash from new journal document
+            
+            // Add ArrayList to journal document.
+            
+            // Journal document to database.
             
         });
-        
-        
         
         journalView.add(tositeIDLabel, 0, 0);
         journalView.add(tositeTiedostoLabel, 0, 1);
@@ -168,8 +186,6 @@ public class JournalAdd {
         journalView.add(kreditTextField, 1, 8);
         journalView.add(new Label("eur"), 2, 6);
         journalView.add(new Label("eur"), 2, 8);
-        
-
         
         return journalView;
     }
