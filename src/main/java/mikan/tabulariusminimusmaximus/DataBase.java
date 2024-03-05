@@ -78,7 +78,7 @@ public class DataBase {
         };
         String[] tables3 = {
             "CREATE TABLE paakirja (riviID INT PRIMARY KEY NOT NULL, tilinumero INT NOT NULL, vuosi INT NOT NULL, kuukausi INT NOT NULL, debet INT, kredit INT, tarkiste TEXT NOT NULL, FOREIGN KEY(tilinumero) REFERENCES tilikartta(tilinumero))",
-            "CREATE TABLE tapahtumarivi (riviID INT PRIMARY KEY NOT NULL, tapahtumaID INT NOT NULL, tilinumero INT NOT NULL, debet INT, kredit INT, tarkiste TEXT NOT NULL, FOREIGN KEY(tapahtumaID) REFERENCES paivakirja(tapahtumaID), FOREIGN KEY(tilinumero) REFERENCES tilikartta(tilinumero))"
+            "CREATE TABLE tapahtumarivi (riviID INT PRIMARY KEY NOT NULL, tositeID INT NOT NULL, selite TEXT NOT NULL, tilinumero INT NOT NULL, debet INT, kredit INT, tarkiste TEXT NOT NULL, FOREIGN KEY(tositeID) REFERENCES tosite(tositeID), FOREIGN KEY(tilinumero) REFERENCES tilikartta(tilinumero))"
         };
         
         // Starting data.
