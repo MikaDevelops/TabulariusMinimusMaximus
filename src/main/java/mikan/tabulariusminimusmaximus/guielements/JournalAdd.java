@@ -1,18 +1,11 @@
 package mikan.tabulariusminimusmaximus.guielements;
 
 import java.io.File;
-import java.time.LocalDate;
-import java.time.chrono.Chronology;
-import java.util.Locale;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
