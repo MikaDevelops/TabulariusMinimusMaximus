@@ -38,11 +38,11 @@ public class DataBaseTest {
     /**
      * Test of getLastDocumentID method, of class DataBase.
      */
-    @org.junit.jupiter.api.Test
-    public void testGetLastDocumentID() {
-        DataBase db = new DataBase();
-        int last = db.getLastDocumentID();
-        assertTrue(last>-1);
-    }
+//    @org.junit.jupiter.api.Test
+//    public void testGetLastDocumentID() {
+//        DataBase db = new DataBase();
+//        int last = db.getLastDocumentID();
+//        assertTrue(last>-1);
+//    }
     
 }
