@@ -7,7 +7,6 @@ package mikan.tabulariusminimusmaximus.datamodel;
 public enum HashedDataBaseTables {
 
     PAAKIRJA,
-    PAIVAKIRJA,
     TAPAHTUMARIVI,
     TOSITE;
     

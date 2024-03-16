@@ -346,13 +346,16 @@ public class DataBase {
         return accounts;
     }
     
+    /**
+     * Returns hash from database entry based on given id.
+     * @param table HashedDataBaseTables table
+     * @param id integer for the hashed database row
+     * @return String hash
+     */
     public String getSavedHash(HashedDataBaseTables table, int id){
         
         String idField = "";
         switch (table){
-            case PAIVAKIRJA:
-                idField = "tapahtumaID";
-                break;
             case TOSITE:
                 idField = "tositeID";
                 break;

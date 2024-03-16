@@ -53,8 +53,8 @@ public class DataBaseTest {
         DataBase db = new DataBase();
         int id = 0;
         String table = "";
-        String expected = "D1FEEA7D7BECB110087E1463868A3AC4";
-        String hash = db.getSavedHash(HashedDataBaseTables.PAIVAKIRJA, 0);
+        String expected = "8368f5f06e1b362211890e7717c274ce".toUpperCase();
+        String hash = db.getSavedHash(HashedDataBaseTables.TOSITE, 0);
         assertEquals(expected, hash);
     }
     

@@ -145,7 +145,7 @@ public class JournalAdd {
             */
             
             // Get hash from previous journal document.
-            String previousJournalHash = db.getSavedHash(HashedDataBaseTables.PAIVAKIRJA, id);
+            String previousJournalHash = db.getSavedHash(HashedDataBaseTables.TOSITE, id);
             
   
             
