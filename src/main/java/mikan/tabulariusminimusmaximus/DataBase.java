@@ -364,13 +364,11 @@ public class DataBase {
                 break;
         }
         
-        try{
+        try(Statement statement = this.getStatement()){
             String sqlString = "SELECT tarkiste FROM " + table
                     +" WHERE " + idField + "=" + id;
-            Statement statement = this.getStatement();
             ResultSet result = statement.executeQuery(sqlString);
             String tarkiste = result.getString("tarkiste").toUpperCase();
-            this.closeStatement(statement);
             return tarkiste;
         }
         catch(SQLException ex){
