@@ -41,12 +41,12 @@ public class DataBaseTest {
 //    @org.junit.jupiter.api.Test
 //    public void testGetLastDocumentID() {
 //        DataBase db = new DataBase();
-//        int last = db.getLastDocumentID();
+//        int last = db.getLastID();
 //        assertTrue(last>-1);
 //    }
     
     /**
-     * Test of getLastDocumentID method, of class DataBase.
+     * Test of getLastID method, of class DataBase.
      */
     @org.junit.jupiter.api.Test
     public void testGetgetSavedHash() {

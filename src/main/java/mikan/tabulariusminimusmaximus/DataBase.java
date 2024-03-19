@@ -252,14 +252,19 @@ public class DataBase {
         }
     }
     
-    /**
-     * Gets the last id from document table (tosite).
-     * @return int last id from document table. -1 if nothing returned.
-     */
-    public int getLastDocumentID () {
+   /**
+    * Returns last id from given table.
+    * @param table name of the table from which the last id is wanted.
+    * @return last id from document table. -1 if nothing returned.
+    */
+    public int getLastID (TableIDfield table) {
+        
         int id = -1;
         Statement statement = this.getStatement();
-        String sql = "SELECT tositeID FROM tosite ORDER BY tositeID DESC LIMIT 1";
+        
+        String idField = table.idFieldName();
+        String tableName = table.tableName();
+        String sql = "SELECT "+idField+" FROM "+tableName+ " ORDER BY tositeID DESC LIMIT 1";
         
         try {
             ResultSet result = statement.executeQuery(sql);

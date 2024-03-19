@@ -36,6 +36,7 @@ public class JournalAdd {
      */
     public static GridPane getJournalAddView( int id, Stage stage, Scene scene ){
         IndexCalculator indexCalculator = new IndexCalculator();
+        DataBase db = new DataBase();
         int nextEntryID = id+1;
         
         HashMap<String, String> addedFields;
@@ -73,7 +74,6 @@ public class JournalAdd {
         
         // Combobox lists
         // Accounts from database
-        DataBase db = new DataBase();
         ArrayList<Account> accounts = db.getAccountList();
         ArrayList<String> accountListing = new ArrayList<>();
         for (int i=0; i < accounts.size(); i++){
@@ -147,12 +147,18 @@ public class JournalAdd {
             // Get hash from previous journal document.
             String previousJournalHash = db.getSavedHash(HashedDataBaseTables.TOSITE, id);
             
-  
+           
             
             // ArrayList for row objects.
             ArrayList<JournalRow> arrayForRow = new ArrayList<>();
             
+            // add the first row into the database
+            JournalRow firstRow = new JournalRow ();
             
+            // go through all the rest rows
+            for (int i = 0; i < indexCalculator.idIndex(); i++){
+                
+            }
             
             // Journal row elements
             // Hash from new journal document

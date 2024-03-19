@@ -21,6 +21,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import mikan.tabulariusminimusmaximus.datamodel.TableIDfield;
 import mikan.tabulariusminimusmaximus.guielements.JournalAdd;
 import mikan.tabulariusminimusmaximus.guielements.JournalView;
 import mikan.tabulariusminimusmaximus.guielements.MenuBarElement;
@@ -70,7 +71,7 @@ public class App extends Application {
         Scene scene = new Scene(pane);
         
         paivakirja.setOnAction(e->{
-            int lastEntryID = db.getLastDocumentID();
+            int lastEntryID = db.getLastID(TableIDfield.TOSITE);
             if(lastEntryID > -1) {
                 pane.setCenter(JournalAdd.getJournalAddView( lastEntryID, stage, scene ));
             }else {pane.setCenter(new Label("Tietokanta viallinen"));}
