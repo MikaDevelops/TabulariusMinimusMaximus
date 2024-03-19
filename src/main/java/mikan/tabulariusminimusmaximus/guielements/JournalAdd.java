@@ -1,8 +1,11 @@
 package mikan.tabulariusminimusmaximus.guielements;
 
 import java.io.File;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,6 +21,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import mikan.tabulariusminimusmaximus.DataBase;
+import mikan.tabulariusminimusmaximus.HashChecksum;
 import mikan.tabulariusminimusmaximus.datamodel.*;
 
 /**
@@ -152,8 +156,35 @@ public class JournalAdd {
             // ArrayList for row objects.
             ArrayList<JournalRow> arrayForRow = new ArrayList<>();
             
+            // Handle first line comboboxes
+            String[] perTiliValues = ((String)perTiliCmbBox.getValue()).split(" ");
+            String[] anTiliValues = ((String)anTiliCmbBox.getValue()).split(" ");
+            
             // add the first row into the database
-            JournalRow firstRow = new JournalRow ();
+            JournalRow firstRow = new JournalRow (
+                    db.getLastID(TableIDfield.TAPAHTUMARIVI)+1,
+                    seliteTextField.getText(),
+                    Integer.parseInt( debetTextField.getText() ),
+                    Integer.parseInt( kreditTextField.getText() ),
+                    Integer.parseInt( perTiliValues[0] ),
+                    Integer.parseInt( anTiliValues[0] ),
+                    perTiliValues[2],
+                    anTiliValues[2],
+                    nextEntryID,
+                    ""
+            );
+            
+            // count hash
+            HashChecksum firstRowChecksum = new HashChecksum(firstRow, db.getSavedHash(HashedDataBaseTables.TOSITE, id));
+            try {
+                firstRow.tarkiste = firstRowChecksum.countHash();
+            } catch (IllegalArgumentException ex) {
+                System.out.println(ex.getMessage());
+            } catch (IllegalAccessException ex) {
+                System.out.println(ex.getMessage());
+            } catch (NoSuchAlgorithmException ex) {
+                System.out.println(ex.getMessage());
+            }
             
             // go through all the rest rows
             for (int i = 0; i < indexCalculator.idIndex(); i++){

@@ -42,15 +42,19 @@ public class JournalView {
             GridPane rivit = new GridPane();
             rivit.setHgap(20);
 
-            rivit.add(new Text("tili"),0,0);
-            rivit.add(new Text("tilinimi"),1,0);
+            rivit.add(new Text("per tili"),0,0);
+            rivit.add(new Text("per tili nimi"),1,0);
             rivit.add(new Text("debet"),2,0);
-            rivit.add(new Text("kredit"),3,0);
+            rivit.add(new Text("an tili"),3,0);
+            rivit.add(new Text("an tili nimi"),4,0);
+            rivit.add(new Text("kredit"),5,0);
 
-            rivit.add(new Text(Integer.toString(journalEntries.get(i).tilinumero)),0,1);
-            rivit.add(new Text(journalEntries.get(i).tilinimi),1,1);
+            rivit.add(new Text(Integer.toString(journalEntries.get(i).tilinumeroPer)),0,1);
+            rivit.add(new Text(journalEntries.get(i).tilinimiPer),1,1);
             rivit.add(new Text(Integer.toString(journalEntries.get(i).debet)),2,1);
-            rivit.add(new Text(Integer.toString(journalEntries.get(i).kredit)),3,1);
+            rivit.add(new Text(Integer.toString(journalEntries.get(i).tilinumeroAn)),3,1);
+            rivit.add(new Text(journalEntries.get(i).tilinimiAn),4,1);
+            rivit.add(new Text(Integer.toString(journalEntries.get(i).kredit)),5,1);
 
             
             journalView.getChildren().addAll(taulu, rivit);

@@ -73,7 +73,7 @@ public class DataBase {
         };
         String[] tables3 = {
             "CREATE TABLE paakirja (riviID INTEGER PRIMARY KEY NOT NULL, tilinumero INT NOT NULL, vuosi INT NOT NULL, kuukausi INT NOT NULL, debet INT, kredit INT, tarkiste TEXT NOT NULL, FOREIGN KEY(tilinumero) REFERENCES tilikartta(tilinumero))",
-            "CREATE TABLE tapahtumarivi (riviID INTEGER PRIMARY KEY NOT NULL, tositeID INT NOT NULL, selite TEXT NOT NULL, tilinumero INT NOT NULL, debet INT, kredit INT, tarkiste TEXT NOT NULL, FOREIGN KEY(tositeID) REFERENCES tosite(tositeID), FOREIGN KEY(tilinumero) REFERENCES tilikartta(tilinumero))"
+            "CREATE TABLE tapahtumarivi (riviID INTEGER PRIMARY KEY NOT NULL, tositeID INT NOT NULL, selite TEXT NOT NULL, tilinumeroPer INT NOT NULL, tilinumeroAn INT NOT NULL, debet INT, kredit INT, tarkiste TEXT NOT NULL, FOREIGN KEY(tositeID) REFERENCES tosite(tositeID), FOREIGN KEY(tilinumeroPer) REFERENCES tilikartta(tilinumero), FOREIGN KEY(tilinumeroAn) REFERENCES tilikartta(tilinumero))"
         };
         
         // Starting data.
@@ -165,8 +165,8 @@ public class DataBase {
                 +"(9460, 17, 'Korkomenot', 'lainojen korot, maksetut viivästyskorot', 0), "
                 +"(9690, 17, 'Muut rahoitusmenot', 'lainojen pankkitakausprovisiot, toimitusmaksut ym. menot', 0)",
                 
-                "INSERT INTO tapahtumarivi(riviID, selite, tositeID, debet, kredit, tilinumero, tarkiste) VALUES "
-                +"(0, 'tietokannan aloitus', 0, 0, 0, 2201, '1bb6d008b9600db6b4b1e76720210980')",
+                "INSERT INTO tapahtumarivi(riviID, selite, tositeID, debet, kredit, tilinumeroPer, tilinumeroAn, tarkiste) VALUES "
+                +"(0, 'tietokannan aloitus', 0, 0, 0, 2201, 2365, '1bb6d008b9600db6b4b1e76720210980')",
                 
                 "INSERT INTO paakirja(riviID, tilinumero, vuosi, kuukausi, debet, kredit, tarkiste) VALUES "
                 +"(0, 2201, 2023, 7, 0, 0, '674be30f03285cb40adb02b71f542148')"
@@ -286,14 +286,17 @@ public class DataBase {
         
         // First get journal documents and journal markings
         String sql = "SELECT tosite.tositeID, tosite.pvm, tosite.kuvalinkki, "
-                + "tosite.tarkiste AS tositetarkiste, tapahtumarivi.riviID, "
-                + "tapahtumarivi.selite, tapahtumarivi.tositeID, tapahtumarivi.debet, "
-                + "tapahtumarivi.kredit, tapahtumarivi.tilinumero, "
-                + "tapahtumarivi.tarkiste AS tapahtumarivitarkiste,"
-                + "tilikartta.nimi "
-                + "FROM tapahtumarivi JOIN tosite "
-                + "ON tosite.tositeID=tapahtumarivi.tositeID "
-                + "JOIN tilikartta ON tilikartta.tilinumero=tapahtumarivi.tilinumero";
+                    +"tosite.tarkiste AS tositetarkiste, tapahtumarivi.riviID, "
+                    +"tapahtumarivi.selite, tapahtumarivi.tositeID, tapahtumarivi.debet, "
+                    +"tapahtumarivi.kredit, tapahtumarivi.tilinumeroPer, tapahtumarivi.tilinumeroAn, "
+                    +"tapahtumarivi.tarkiste AS tapahtumarivitarkiste, "
+                    +"tilikartta.nimi AS nimiPer, "
+                    +"(SELECT tilikartta.nimi FROM tilikartta "
+                    +"WHERE tapahtumarivi.tilinumeroAn=tilikartta.tilinumero) AS nimiAn "
+                    +"FROM tapahtumarivi "
+                    +"JOIN tosite ON tosite.tositeID=tapahtumarivi.tositeID "
+                    +"JOIN tilikartta ON tilikartta.tilinumero=tapahtumarivi.tilinumeroPer";
+
         Statement statement = this.getStatement();
         try {
             ResultSet results = statement.executeQuery(sql);
@@ -304,8 +307,10 @@ public class DataBase {
                 journal.tositeID = results.getInt("tositeID");
                 journal.pvm = results.getString("pvm");
                 journal.selite      = results.getString("selite");
-                journal.tilinumero = results.getInt("tilinumero");
-                journal.tilinimi = results.getString("nimi");
+                journal.tilinumeroPer = results.getInt("tilinumeroPer");
+                journal.tilinumeroAn = results.getInt("tilinumeroAn");
+                journal.tilinimiPer = results.getString("nimiPer");
+                journal.tilinimiAn = results.getString("nimiAn");
                 journal.debet = results.getInt("debet");
                 journal.kredit = results.getInt("kredit");
                 journal.tarkiste = results.getString("tapahtumarivitarkiste");

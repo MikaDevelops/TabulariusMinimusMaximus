@@ -28,10 +28,10 @@ public class HashChecksumTest {
     public void testCountHash_jounalRow() throws Exception{
     
         String testPreviousHash = "8368f5f06e1b362211890e7717c274ce";
-        JournalRow journalRow = new JournalRow(777,"selitys",11,22,99999,"testitili",33,"");
+        JournalRow journalRow = new JournalRow(777,"selitys",11,22,55555,99999,"testitili","testitili2",33,"");
         HashChecksum checksum = new HashChecksum(journalRow, testPreviousHash);
         String result = checksum.countHash();
-        String expectation = "7245F0E00604D4DA108852647E6A9934";
+        String expectation = "b87534c951ffb56e62aa96e03712f546".toUpperCase();
  
         assertEquals(expectation, result);
     }
